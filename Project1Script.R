@@ -34,6 +34,28 @@ tmap_mode("view")
 tm_shape(stops_sf) + tm_dots(size = 0.05, col = "blue") +
   tm_shape(stop_buf) + tm_borders(col = "red")
 
+
+################################################################################
+# Bus Stops Map with Buffer
+
+tmap_mode("view")  
+
+tm_shape(stops_sf) +
+  tm_dots(size = 0.05, col = "blue", popup.vars = c("stop_name" = "stop_name")) +
+  tm_shape(stop_buf) +
+  tm_borders(col = "red", lwd = 2) +
+  tm_layout(
+    title = "Summit Stage Bus Stops with 400m Buffer",
+    title.size = 1.5,
+    title.position = c("center", "top"),
+    frame = FALSE,
+    legend.outside = TRUE
+  ) +
+  tm_scale_bar(position = c("right", "bottom")) +
+  tm_compass(position = c("left", "bottom")) 
+
+
+################################################################################
 # Check data
 ls()
 
@@ -75,8 +97,7 @@ summit_access <- summit %>%
 
 
 ################################################################################
-# Bus Stops Map
-library(tmap)
+# Transit Accessibility Map
 tmap_mode("plot")
 
 tm_shape(summit_access) +
@@ -175,7 +196,7 @@ tm_shape(summit_access) +
               style = "quantile",
               title = "Proportion within 400 m of Bus Stop") +
   tm_shape(stops_sf) +
-  tm_dots(size = 0.04, col = "black", legend.show = FALSE) +
+  tm_dots(size = 0.25, col = "black", legend.show = FALSE) +
   tm_layout(title = "Transit Accessibility in Summit County") +
   tm_scale_bar(position = c("right", "bottom")) +   # add scale bar
   tm_compass(position = c("left", "bottom"))        # add north arrow
@@ -194,6 +215,4 @@ ggplot(df, aes(x = "", y = Value, fill = Category)) +
   labs(title = "County Area Transit Coverage") +
   theme_void() +
   scale_fill_manual(values = c("navyblue", "lightblue"))
-
-
 
